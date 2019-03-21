@@ -13,7 +13,7 @@ test = False
 
 if __name__ == '__main__':
     sourceDir = "D:\Data\pigPose\FasterRcnn_result"
-    xlsDir = "D:\Data\pigPose\\xls"
+    xlsDir = "D:\Data\pigPose\\posResult"
     xlsSaveDir = "D:\Data\pigPose\PoseData"
 
     timeTupleList = \
@@ -28,7 +28,7 @@ if __name__ == '__main__':
      (2016, 7, 15, 15, 48, 24, 0, 0, 0),
      (2016, 7, 15, 16, 58, 46, 0, 0, 0),
      (2016, 7, 15, 18, 9, 8, 0, 0, 0),
-     (2016, 7, 15, 18, 8, 59, 0, 0, 0),
+     (2016, 7, 20, 18, 8, 59, 0, 0, 0),             # 第12个视频不知道为什么是20号的
      (2016, 7, 16, 7, 4, 21, 0, 0, 0),
      (2016, 7, 16, 8, 14, 42, 0, 0, 0),
      (2016, 7, 16, 9, 25, 24, 0, 0, 0),
@@ -36,7 +36,9 @@ if __name__ == '__main__':
      (2016, 7, 16, 11, 47, 16, 0, 0, 0),
      (2016, 7, 16, 12, 58, 29, 0, 0, 0),
      (2016, 7, 16, 14, 9, 13, 0, 0, 0),
-     (2016, 7, 16, 15, 19, 36, 0, 0, 0)
+     (2016, 7, 16, 15, 19, 36, 0, 0, 0),
+     (2016, 7, 16, 16, 29, 57, 0, 0, 0),
+     (2016, 7, 16, 17, 40, 16, 0, 0, 0)
      ]
     CLASSES = ('A', 'B', 'C', 'D')
 
@@ -59,23 +61,27 @@ if __name__ == '__main__':
 
     # 循环读取视频中四头猪的数据表
     for dir in dirls:
-
         numStr = str.split(dir, '.')[0]
         num = int(numStr)
+        if num != 21 and num != 22:
+            continue
+
         st = time.mktime(timeTupleList[num - 1])
         # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(st)))
 
         if not test or num == 1:
             OK, srcData = dealExcel.readData(os.path.join(sourceDir, dir))
 
-            # 读取相应视频四头猪的行为检测数据
+            # 读取相应视频四头猪的姿态检测数据
             pigDataLs = []
             for i in range(4):
                 xlsPath = os.path.join(xlsDir, numStr + "_" + CLASSES[i] +".xls")
                 OK, pigData = dealExcel.readData(xlsPath)
                 for i in range(len(pigData)):
-                    pigData[i][0] = int(os.path.basename(pigData[i][0])[:-4])
-                pigData.sort(key=lambda x:x[0])
+                    # pigData[i][0] = int(os.path.basename(pigData[i][0])[:-4])
+                    pigData[i][0] = int(os.path.basename(pigData[i][0]).split('_')[-1].split('.')[0])
+
+                # pigData.sort(key=lambda x:x[0])
                 # print(pigData[0])
                 pigDataLs.append(pigData)
 
@@ -100,10 +106,21 @@ if __name__ == '__main__':
                         poseData.append("None")
                         poseData.append(-1)
                     else:
+                        """
+                        这代码真TM暴力,下次用求你改改 --sc 2019.03.19 23:20
+                        居然被这代码救了一命，暴力出奇迹 --sc 2019.03.20 2:14
+                      """
+                        flag = False
                         for it in range(len(pigDataLs[i])):
-                            if pigDataLs[i][it][0] == frame:
+                            if pigDataLs[i][it][0] == frame - 1:
                                 poseData.append(pigDataLs[i][it][1])
                                 poseData.append(float('%.2f' % float(pigDataLs[i][it][2])))
+                                flag = True
+                                break
+                        if not flag:
+                            poseData.append("Error")
+                            poseData.append("Error")
+
                     xlsDataRow.extend(poseData)
                 xlsData.append(xlsDataRow)
 

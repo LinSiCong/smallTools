@@ -18,16 +18,17 @@ if __name__ == '__main__':
     CLASSES = ('A', 'B', 'C', 'D')
 
     # 数据分成了两天
-    # 前12个视频的时间从2016/07/15 06:23:10开始至2016/07/15 19:19:44
-    # 后8个视频的时间从2016/07/16 07:04:26开始至2016/07/16 16:29:56
-    cut = (12, 8)
-    timeTuple = [(2016, 7, 15, 6, 23, 10, 0, 0, 0), (2016, 7, 16, 7, 4, 26, 0, 0, 0)]
+    # 前11个视频的时间从2016/07/15 06:23:10开始至2016/07/15 19:19:38
+    # 第12个视频的时间从2016/07/20 18:09:04开始至2016/07/20 19:19:44
+    # 后10个视频的时间从2016/07/16 07:04:26开始至2016/07/16 18:50:41
+    cut = (11, 1, 10)
+    timeTuple = [(2016, 7, 15, 6, 23, 10, 0, 0, 0), (2016, 7, 20, 18, 9, 4, 0, 0, 0), (2016, 7, 16, 7, 4, 26, 0, 0, 0)]
     conf = 0.7
 
     # 统计数据初始化
     pigData = []
     for i in range(4):
-        tim = time.mktime(timeTuple[0])
+        tim = time.mktime(timeTuple[2])
         action = "None"
         pigData.append([CLASSES[i], tim, action, []])
 
@@ -36,6 +37,7 @@ if __name__ == '__main__':
     for xls in xlsLs[12:]:
         OK, data = dealExcel.readData(os.path.join(xlsSaveDir, xls))
         data = data[1:]
+        print("-----------" + xls)
         for row in data:
             # 将字符串转化为时间戳
             tim = time.mktime(time.strptime(row[1],'%Y-%m-%d %H:%M:%S'))
@@ -48,7 +50,10 @@ if __name__ == '__main__':
                     continue
                 if float(pig[4]) < conf:
                     continue
+                if xls == "021_pose.xls":
+                    print(pig[6])
                 if float(pig[6]) < conf:
+
                     continue
                 # 数据初始化
                 if pigData[i][2] == "None":
@@ -60,6 +65,7 @@ if __name__ == '__main__':
                 pigData[i][3].append([pigData[i][1], tim, pigData[i][2]])
                 pigData[i][1] = tim
                 pigData[i][2] = action
+
 
     for i in range(4):
         if pigData[i][1] == tim:

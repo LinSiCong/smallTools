@@ -8,6 +8,7 @@
 import xlrd
 import xlwt
 import os
+import functools
 
 
 def readWorkbook(file):
@@ -80,3 +81,47 @@ def writeExcel(xlsPath, xlsName, data, sheetName="Sheet1"):
             sheet.write(i, j, str(data[i][j]))
     workbook.save(xlsFile)
     print(xlsFile + " finish write.")
+
+def demoFunc(data):
+    def sortDemo(a, b):
+        """
+        升序排序算子
+        """
+        if a < b:
+            return -1
+        if a > b:
+            return 1
+        return 0
+    return sorted(data, key=functools.cmp_to_key(sortDemo))
+
+
+def dealData(readPath, writePath, sheetID=1, func=demoFunc):
+    ok, data = readData(readPath, sheetID)
+    if not ok:
+        return
+    data = func(data)
+    xlsName = os.path.basename(writePath)
+    xlsPath = os.path.dirname(writePath)
+    writeExcel(xlsPath, xlsName, data)
+    return
+
+if __name__ == '__main__':
+    def deldata(data):
+        for i in range(len(data) - 1, 0, -1):
+            if int(data[i][2]) % (25 * 5) == 0:
+                continue
+            print(data[i])
+            del data[i]
+        return data
+
+    srcPath = "D:\Data\pigPose\\PoseData"
+    dstPath = "D:\Data\pigPose\\temp"
+    if not os.path.exists(dstPath):
+        os.makedirs(dstPath)
+    ls = ['A', 'B', 'C', 'D']
+    num = ['021', '022']
+    for n in num:
+        name = n + "_pose.xls"
+        dealData(os.path.join(srcPath, name), os.path.join(dstPath, name), func=deldata)
+
+

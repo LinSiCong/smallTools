@@ -98,13 +98,13 @@ def ExcelToVideo(excelFile, videoFile, rootPath):
 
 
 if __name__ == '__main__':
-    rootPath = "D:/Data/pigClimb/"
+    rootPath = "D:/Data/pigPose/"
     excelDir = os.path.join(rootPath, "FasterRcnn_result")
     videoDir = os.path.join(rootPath, "SourceVideo")
-    fList = os.listdir(videoDir)
+    # fList = os.listdir(videoDir)
+    fList = ["021.avi", "022.avi"]
+
     for fileName in fList:
-        if fileName == "01.avi":
-            continue
         print("Read " + fileName + " and process")
         excelPath = os.path.join(excelDir, fileName + ".xls")
         videoPath = os.path.join(videoDir, fileName)
