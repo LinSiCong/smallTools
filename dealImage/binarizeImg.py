@@ -9,6 +9,7 @@ import cv2
 import os
 
 
+
 def binarization(image):
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # 转换为灰度图
     return cv2.threshold(image_gray, 0, 255, cv2.THRESH_OTSU)[1]

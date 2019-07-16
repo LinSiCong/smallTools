@@ -8,12 +8,15 @@
 获取当前目录下除该代码文件外所有文件，不包括文件夹
 """
 import os
+import glob
 
+def listDirPath(rootDir, suffix=''):
+    return glob(rootDir + "/*" + suffix)
 
-def listdir(rootDir, suffix='jpg'):
+def listDir(rootDir, suffix='jpg'):
     files = []
     for lists in os.listdir(rootDir):
-        if lists[-3:] == suffix:
+        if lists[-len(suffix):] == suffix:
             files.append(lists)
     return files
 

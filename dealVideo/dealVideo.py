@@ -61,7 +61,6 @@ def showVideo(video, infoFlag, step=1, rate=1.0, videoName="video", winName='dem
 def demoFunc(frame, framenum=0, param=[]):
     return frame
 
-
 def showVideoWithFunc(video, infoFlag, param, func=demoFunc, step=1, rate=1.0, videoName="video", winName='demo'):
     """
     播放视频，允许跳帧播放，允许自定义单帧图像处理函数，需提供参数列表，该函数要包含包括但帧图像，当前帧数，参数列表三个参数。
@@ -189,7 +188,7 @@ def videoToImage(video, imgPath, step=1, func=demoFunc):
     return
 
 
-def videoToImageSelction(video, imgPath, selection, func=demoFunc):
+def videoToImageSelction(video, imgPath, selection, prefix, func=demoFunc):
     """
         读取视频，选取特定帧，保存为图片集
         :param video: 视频
@@ -209,8 +208,10 @@ def videoToImageSelction(video, imgPath, selection, func=demoFunc):
     while flag:
         if frameNum == selection[index]:
             frame = func(frame)
-            cv2.imwrite(os.path.join(imgPath, str(frameNum) + '.jpg'), frame)
+            cv2.imwrite(os.path.join(imgPath, prefix + str(frameNum) + '.jpg'), frame)
             index += 1
+            if index >= len(selection):
+                break
         frameNum += 1
         if index == len(selection):
             break
@@ -218,10 +219,22 @@ def videoToImageSelction(video, imgPath, selection, func=demoFunc):
     print("Finish")
     return
 
+def getVideoShape(video):
+    return (video.get(3), video.get(5)) # (width, height)
+
+def getVideoFrameNum(video):
+    return int(video.get(7))  # 帧数
+
+def getVideoFPS(video):
+    return int(video.get(5)) # 帧速率
+
+def getVideoTime(video):
+    return getVideoFrameNum(video) / getVideoFPS(video) # 时长 second
+
 
 if __name__ == '__main__':
     videoSrc = "D:\Data\pigPose\SourceVideo"
-    imgPath = os.path.join("D:\Data\pigPose\sourceTestImg", "01.avi")
+    videoPath = os.path.join("D:\Data\pigPose\sourceTestImg", "01.avi")
     ok, v = readVideo(os.path.join(videoSrc, "01.avi"))
     if ok:
-        videoToImageSelction(v, imgPath, selection=[11100 + x * 25 for x in range(0, 3)])
+        videoToImageSelction(v, videoPath, selection=[11100 + x * 25 for x in range(0, 3)])

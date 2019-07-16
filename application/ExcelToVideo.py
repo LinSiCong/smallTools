@@ -65,8 +65,7 @@ def dealFrame(frame, framenum, param):
             p2 = (coord[2], coord[3])
             cv2.rectangle(frame, p1, p2, (0, 255, 0), 2, 1)
             p3 = (coord[0]+5, coord[3]-5)
-            font = cv2.FONT_HERSHEY_SIMPLEX
-            cv2.putText(frame, CLASSES[i] + " " + str(score), p3,  font, 1, (0, 0, 255), 3)
+            cv2.putText(frame, CLASSES[i] + " " + str(score), p3,  cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
     return frame
 
 

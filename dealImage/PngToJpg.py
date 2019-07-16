@@ -10,6 +10,7 @@
 import os
 import cv2
 
+
 if __name__ == '__main__':
     work_dir = os.getcwd()
     convert_dir = os.path.join(work_dir, "convertFile")

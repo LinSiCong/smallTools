@@ -7,6 +7,23 @@
 
 
 import os
+import shutil
+
+def getBaseName(fileName):
+    """
+    获取文件名，去文件格式（后缀）
+    :param fileName: 文件全名
+    :return: 文件名
+    """
+
+    # tmp = fileName.split(".")
+    # if len(tmp) > 1:
+    #     return fileName[:-(len(tmp[-1])+1)]
+    # return fileName
+    pos = ("." + fileName).rindex(".")  # tip: rindex找不到会抛ValueError, 这里是个错误处理
+    if pos > 0:
+        return fileName[:pos-1]
+    return fileName
 
 
 def renameAllFile(path, prefix="", suffix="", mode=0, type="", startID=0, sort=False):
@@ -42,9 +59,34 @@ def renameAllFile(path, prefix="", suffix="", mode=0, type="", startID=0, sort=F
     print("Rename " + str(cot) + " files in " + path)
 
 
-"[VCB-Studio] Bungo Stray Dogs [01][Ma10p_1080p][x265_flac]"
+def copyFile(srcFile, dstPath):
+    if not os.path.isfile(srcFile):
+        print(srcFile + " not exist.")
+        return
+    if os.path.normcase(os.path.dirname(srcFile)) == os.path.normcase(dstPath):
+        print("Copying files in the same directory is not supported.")
+        return
+    if not os.path.exists(dstPath):
+        os.makedirs(dstPath)
+    dstfile = os.path.join(dstPath, os.path.basename(srcFile))
+    if os.path.isfile(dstfile):
+        print("A file of the same name exists under the destination path.")
+    shutil.copyfile(srcFile, dstfile)
+
+def moveFile(srcFile, dstPath):
+    if not os.path.isfile(srcFile):
+        print(srcFile + " not exist.")
+        return
+    if os.path.normcase(os.path.dirname(srcFile)) == os.path.normcase(dstPath):
+        print("Copying files in the same directory is not supported.")
+        return
+    if not os.path.exists(dstPath):
+        os.makedirs(dstPath)
+    dstFile = os.path.join(dstPath, os.path.basename(srcFile))
+    if os.path.isfile(dstFile):
+        print("A file of the same name exists under the destination path.")
+    shutil.move(srcFile, dstFile)
 
 if __name__ == '__main__':
-    path = "D:\Downloads\文豪野犬24集全\新建文件夹"
-    renameAllFile(path, prefix="[VCB-Studio] Bungo Stray Dogs [0", suffix="][Ma10p_1080p][x265_flac]", mode=1,
-                  type=".ass", startID=12, sort=True)
+    srcFile = "testspace/img/05.jpg"
+    dstPath = "testspace/img/copy"
