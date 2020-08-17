@@ -3,7 +3,7 @@
 # @Date    : 2019/3/1 
 # @Time    : 16:28
 # @Author  : LinSicong
-# @File    : dealString.py
+# @File    : StringProcessor.py
 
 import re
 

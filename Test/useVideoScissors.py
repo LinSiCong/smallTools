@@ -5,7 +5,7 @@
 # @Author  : LinSicong
 # @File    : useVideoScissors.py
 
-from dealVideo.dealVideo import videoScissors
+from dealVideo.VideoProcessor import videoScissors
 import cv2
 import os
 

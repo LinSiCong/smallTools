@@ -4,9 +4,7 @@
 # @Time    : 15:36
 # @Author  : LinSicong
 # @File    : getFileList.py
-"""
-获取当前目录下除该代码文件外所有文件，不包括文件夹
-"""
+
 import os
 import glob
 

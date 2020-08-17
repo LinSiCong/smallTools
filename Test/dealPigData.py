@@ -5,7 +5,7 @@
 # @Author  : LinSicong
 # @File    : dealPigData.py
 
-from dealExcel import dealExcel
+from dealExcel import ExcelProcessor
 import os
 import time
 
@@ -70,13 +70,13 @@ if __name__ == '__main__':
         # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(st)))
 
         if not test or num == 1:
-            OK, srcData = dealExcel.readData(os.path.join(sourceDir, dir))
+            OK, srcData = ExcelProcessor.readData(os.path.join(sourceDir, dir))
 
             # 读取相应视频四头猪的姿态检测数据
             pigDataLs = []
             for i in range(4):
                 xlsPath = os.path.join(xlsDir, numStr + "_" + CLASSES[i] +".xls")
-                OK, pigData = dealExcel.readData(xlsPath)
+                OK, pigData = ExcelProcessor.readData(xlsPath)
                 for i in range(len(pigData)):
                     # pigData[i][0] = int(os.path.basename(pigData[i][0])[:-4])
                     pigData[i][0] = int(os.path.basename(pigData[i][0]).split('_')[-1].split('.')[0])
@@ -124,5 +124,5 @@ if __name__ == '__main__':
                     xlsDataRow.extend(poseData)
                 xlsData.append(xlsDataRow)
 
-            dealExcel.writeExcel(xlsSaveDir, numStr + "_pose.xls", xlsData)
+            ExcelProcessor.writeExcel(xlsSaveDir, numStr + "_pose.xls", xlsData)
             print("----------")

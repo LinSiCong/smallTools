@@ -7,28 +7,23 @@
 
 import glob
 from xml.dom import minidom
+from dealXML import dealXML
 
-rootPath = "D:\Data\pigdata\data\\val\Annotations"
-xmlList = glob.glob(rootPath + "/*.xml")
 
-for xmlName in xmlList:
-    dom = minidom.parse(xmlName)
-    rootNode = dom.documentElement
-    objectNodes = rootNode.getElementsByTagName('object')
-    for objectNode in objectNodes:
-        nameNode = objectNode.getElementsByTagName('name')
-        if nameNode[0].firstChild.data == 'A':
-            nameNode[0].firstChild.data = 'pig'
-        elif nameNode[0].firstChild.data == 'B':
-            nameNode[0].firstChild.data = 'pig'
-        elif nameNode[0].firstChild.data == 'C':
-            nameNode[0].firstChild.data = 'pig'
-        elif nameNode[0].firstChild.data == 'D':
-            # rootNode.removeChild(objectNode)
-            nameNode[0].firstChild.data = 'pig'
-    f = open(xmlName, 'w', encoding='utf-8')
-    dom.writexml(f, addindent='  ')
+
+def handler(xmlpath):
+    dom = minidom.parse(xmlpath)
+    dealXML.setXMLLabel(dom, 'folder', 'spike')
+    dealXML.setXMLLabel(dom, 'path', 'C:\\Users\\linking\\Desktop\\shuidao\\spike')
+
+    f = open(xmlpath, 'w', encoding='utf-8')
+    dealXML.writeXML(xmlpath,dom)
     f.close()
-print("done!")
 
+if __name__ == '__main__':
+    rootPath = "D:\Data\Rice\spike2"
+    xmlList = glob.glob(rootPath + "/*.xml")
 
+    for xmlpath in xmlList:
+        handler(xmlpath)
+    print("done!")

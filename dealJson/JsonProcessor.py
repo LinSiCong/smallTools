@@ -3,7 +3,7 @@
 # @Date    : 2019/1/16 
 # @Time    : 15:14
 # @Author  : LinSicong
-# @File    : dealJson.py
+# @File    : JsonProcessor.py
 
 
 import json
@@ -19,7 +19,7 @@ def loadJsonFile(file):
     return json.loads(js)
 
 
-def writeJsonFile(dic, file):
+def writeJsonFile(dic: object, file: object) -> object:
     dirs = os.path.dirname(file)
     if not os.path.exists(dirs):
         os.makedirs(dirs)

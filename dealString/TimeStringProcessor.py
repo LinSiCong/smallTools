@@ -3,7 +3,7 @@
 # @Date    : 2019/3/5 
 # @Time    : 16:26
 # @Author  : LinSicong
-# @File    : dealTimeString.py
+# @File    : TimeStringProcessor.py
 
 
 import time

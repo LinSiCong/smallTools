@@ -49,6 +49,19 @@ class dealConfig:
             self.cf.add_section(section)
         self.cf.set(section, option, value)
 
+class MyPathConfig:
+    def __init__(self, root_path):
+        pass
+
+    def __new__(cls, *args, **kwargs):
+        """
+        单例
+        """
+        if not hasattr(MyPathConfig, "_instance"):
+            with MyPathConfig._instance_lock:
+                if not hasattr(MyPathConfig, "_instance"):
+                    MyPathConfig._instance = object.__new__(cls)
+        return MyPathConfig._instance
 
 if __name__ == '__main__':
     config_path = "../testspace/project.conf"

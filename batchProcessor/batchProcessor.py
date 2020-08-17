@@ -13,7 +13,7 @@ def batchProcessor(processor, params, dirPath, fileType=None):
     用于对一个目录下，同类型文件进行处理。
     使用时需要对要处理的函数再封装，封装的目的是进行参数解析。
     主要是一个扩展工具，使得原本对单个文件的处理，扩展到对一个目录下所有同类文件进行处理。
-    :param processor: 高阶函数， 一般是无返回值的函数,需要自行再封装，做参数解析
+    :param processor: 单文件处理操作，高阶函数， 一般是无返回值的函数,需要自行再封装，做参数解析
     :param params: 参数列表
     :param dirPath: 文件目录
     :param fileType: 文件类型,不要带"."

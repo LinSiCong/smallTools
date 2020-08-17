@@ -5,7 +5,7 @@
 # @Author  : LinSicong
 # @File    : renameSomeFile.py
 
-from dealFile import dealFile
+from dealFile import FileProcessor
 import os
 
 if __name__ == '__main__':
@@ -19,5 +19,5 @@ if __name__ == '__main__':
                 ssubPath = os.path.join(subPath, sdir)
                 print(ssubPath)
                 if os.path.isdir(ssubPath):
-                    dealFile.renameAllFile(os.path.join(subPath, sdir), prefix=dir + "_" + sdir + "_")
+                    FileProcessor.renameAllFile(os.path.join(subPath, sdir), prefix=dir + "_" + sdir + "_")
 

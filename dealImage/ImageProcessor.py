@@ -3,7 +3,7 @@
 # @Date    : 2019/1/17 
 # @Time    : 17:27
 # @Author  : LinSicong
-# @File    : dealImage.py
+# @File    : ImageProcessor.py
 
 import cv2
 import numpy as np
@@ -23,6 +23,11 @@ def verticallyFlip(frame):
 def rotate90(frame, rotate = 1):
     return np.rot90(frame, rotate)
 
+def cutImg(img, x, y, width, height):
+    return img[x : x + width - 1, y :y + height - 1]
+
+def cutImg(img, left_up, right_down):
+    return img[left_up[0] : right_down[0], left_up[1] :right_down[1]]
 
 if __name__ == '__main__':
     imgPath = ""

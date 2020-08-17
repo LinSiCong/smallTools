@@ -3,7 +3,7 @@
 # @Date    : 2019/1/9 
 # @Time    : 10:08
 # @Author  : LinSicong
-# @File    : readArguments.py
+# @File    : dealCommand.py
 """
 读取命令行输入的参数（主要是介绍argparse的用法）
 """

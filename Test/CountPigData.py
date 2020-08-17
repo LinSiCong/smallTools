@@ -5,7 +5,7 @@
 # @Author  : LinSicong
 # @File    : CountPigData.py
 
-from dealExcel import dealExcel
+from dealExcel import ExcelProcessor
 import os
 import time
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # 开始统计
     temp = 0
     for xls in xlsLs[12:]:
-        OK, data = dealExcel.readData(os.path.join(xlsSaveDir, xls))
+        OK, data = ExcelProcessor.readData(os.path.join(xlsSaveDir, xls))
         data = data[1:]
         print("-----------" + xls)
         for row in data:
@@ -84,6 +84,6 @@ if __name__ == '__main__':
             str = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(st)) + " - " + time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ed))
             ct = ed - st
             data.append([str, ct , action])
-        dealExcel.writeExcel(countDtatSeveDir, saveName, data)
+        ExcelProcessor.writeExcel(countDtatSeveDir, saveName, data)
 
     print("")

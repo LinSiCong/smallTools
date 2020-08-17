@@ -6,13 +6,25 @@
 # @File    : dealXML.py
 
 from xml.dom import minidom
+from dealXML import fixXML
 import glob
 import os
 
-def readXML(xmlPath):
-    return minidom.parse(xmlPath)   # 打开xml文档
+def dealErrorCode(filePath, outcode='utf-8'):
+    """
+    处理编码错误
+    xml.parsers.expat.ExpatError: not well-formed
+    """
+    with open(filePath, 'r') as f:
+        data = f.read()
+    with open(filePath, 'w', encoding=outcode) as f1:
+        f1.write(data)
+    return
 
-def writeXML(savePath, dom):
+def readXML(xmlPath, encoding='utf-8'):
+    return minidom.parseString(minidom.parse(xmlPath).toxml(encoding))  # 打开xml文档
+
+def writeXML(savePath, dom, fix=True, indent='', addindent='\t', newl='\n',encoding='utf-8'):
     """
     写xml文件
     :param filePath:
@@ -23,13 +35,15 @@ def writeXML(savePath, dom):
         os.makedirs(basePath)
     file = open(savePath, 'w')
     assert isinstance(dom, minidom.Document)
-    dom.writexml(file, addindent='\t', newl='\n')
+    if fix:
+        minidom.Element.writexml = fixXML.fixed_writexml
+    dom.writexml(file, indent=indent, addindent=addindent, newl=newl, encoding=encoding)
     file.close()
     print("Write " + savePath + " successfully")
     return
 
 def findXMLLabel(dom, labelname):
-    assert isinstance(dom, minidom.Document)
+    # assert isinstance(dom, minidom.Document)
     return dom.getElementsByTagName(labelname)
 
 
@@ -47,6 +61,29 @@ def modifyXMLLabel(dom, labelname, orign, val):
         assert isinstance(txt, minidom.Text)
         if txt.data == orign:
             txt.data = val
+
+
+def createTextLabel(dom, labelname, value):
+    textLabel = dom.createElement(labelname)
+    labelText = dom.createTextNode(value)
+    textLabel.appendChild(labelText)
+    return textLabel
+
+def createLabel(dom, labelname, children):
+    assert isinstance(children, list)
+    label = dom.createElement(labelname)
+    for child in children:
+        label.appendChild(child)
+    return label
+
+def getOnlyLabel(dom, labelname):
+    ls = findXMLLabel(dom, labelname)
+    assert len(ls) == 1
+    return ls[0]
+
+def getOnlyValue(dom, labelname):
+    return getOnlyLabel(dom, labelname).firstChild.data
+
 
 if __name__ == '__main__':
     list = glob.glob("D:\Data\pigTrack\VOC2007\Annotations-src/*.xml")

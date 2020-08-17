@@ -3,11 +3,11 @@
 # @Date    : 2019/3/29 
 # @Time    : 17:11
 # @Author  : LinSicong
-# @File    : createAnnotation.py
+# @File    : annotationProcessor.py
 
 from dealXML import dealXML
 from dealXML import xmlGenerator
-from dealExcel import dealExcel
+from dealExcel import ExcelProcessor
 import os
 import cv2
 
@@ -64,12 +64,13 @@ def generateObjectNode(name, xmin, ymin, xmax, ymax):
         ])
     return objectStruct
 
+
 if __name__ == '__main__':
     xlsPath = "D:\PycharmProjects\smallTools\\testspace\label\\01.avi.xls"
     jpgPath = os.path.join(os.path.dirname(xlsPath), "1.jpg")
     img = cv2.imread(jpgPath)
     shape = img.shape
-    row = dealExcel.readData(xlsPath)[1][1]
+    row = ExcelProcessor.readData(xlsPath)[1][1]
     classes = ['A', 'B', 'C', 'D']
 
     labelTree = generateLabelStruct(os.path.basename(jpgPath), jpgPath, shape[0], shape[1], shape[2])

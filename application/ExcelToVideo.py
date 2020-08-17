@@ -5,8 +5,8 @@
 # @Author  : LinSicong
 # @File    : ExcelToVideo.py
 
-from dealExcel import dealExcel
-from dealVideo import dealVideo
+from dealExcel import ExcelProcessor
+from dealVideo import VideoProcessor
 import cv2
 import os
 
@@ -70,10 +70,10 @@ def dealFrame(frame, framenum, param):
 
 
 def ExcelToVideo(excelFile, videoFile, rootPath):
-    success, data = dealExcel.readData(excelPath, 1)
+    success, data = ExcelProcessor.readData(excelPath, 1)
     if success:
         print(data)
-    success, video = dealVideo.readVideo(videoPath)
+    success, video = VideoProcessor.readVideo(videoPath)
     if not success:
         print("Read " + videoPath + " failed.")
         return
@@ -91,7 +91,7 @@ def ExcelToVideo(excelFile, videoFile, rootPath):
     detectionVideoPath = os.path.join(rootPath, "detectionVideo")
     if not os.path.isdir(detectionVideoPath):
         os.makedirs(detectionVideoPath)
-    dealVideo.makeVideoFromVideo(video, detectionVideoPath, True, param, func=dealFrame, step=JUMP_SECOND, fps=2, videoName=os.path.splitext(videoName)[0] + "_d.avi")
+    VideoProcessor.makeVideoFromVideo(video, detectionVideoPath, True, param, func=dealFrame, step=JUMP_SECOND, fps=2, videoName=os.path.splitext(videoName)[0] + "_d.avi")
     video.release()
     return
 

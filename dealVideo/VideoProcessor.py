@@ -3,11 +3,11 @@
 # @Date    : 2018/9/16 
 # @Time    : 21:04
 # @Author  : LinSicong
-# @File    : dealVideo.py
+# @File    : VideoProcessor.py
 
 import cv2
 import os
-from dealImage import dealImage
+from dealImage import ImageProcessor
 
 
 def readVideo(file):
@@ -90,7 +90,7 @@ def showVideoWithFunc(video, infoFlag, param, func=demoFunc, step=1, rate=1.0, v
             if infoFlag:
                 print("Frame " + str(frameNum + 1) + " is showing.")
             frame = func(frame, frameNum, param)
-            frame = dealImage.resize(frame, rate)
+            frame = ImageProcessor.resize(frame, rate)
             cv2.imshow(winName, frame)
         frameNum += 1
         flag, frame = video.read()
